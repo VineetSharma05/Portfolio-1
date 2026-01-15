@@ -1,36 +1,56 @@
+import { motion } from "framer-motion"
 const Hero = () => {
   return (
     <section className="min-h-screen flex items-center">
       <div className="max-w-6xl mx-auto px-6 pt-32">
-        
-        {/* Main Heading */}
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-tight">
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-5xl md:text-7xl font-semibold tracking-tight leading-tight"
+        >
           Building thoughtful <br />
           digital experiences.
-        </h1>
+        </motion.h1>
 
         {/* Subheading */}
-        <p className="mt-6 max-w-2xl text-lg text-muted">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+          className="mt-6 max-w-2xl text-lg text-muted"
+        >
           I’m Vineet — an engineer focused on building clean, scalable, and
           impactful systems across AI, web, and real-world problem spaces.
-        </p>
+        </motion.p>
 
-        {/* CTA */}
-        <div className="mt-10 flex gap-6">
-          <a
+        {/* Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          className="mt-10 flex gap-6"
+        >
+          <motion.a
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2 }}
             href="#projects"
-            className="px-6 py-3 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition"
+            className="px-6 py-3 rounded-xl bg-foreground text-background text-sm font-medium"
           >
             View Work
-          </a>
+          </motion.a>
 
-          <a
+          <motion.a
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2 }}
             href="#contact"
-            className="px-6 py-3 rounded-xl border border-glassBorder text-sm font-medium text-foreground hover:bg-glass transition"
+            className="px-6 py-3 rounded-xl border border-glassBorder text-sm font-medium text-foreground"
           >
             Get in touch
-          </a>
-        </div>
+          </motion.a>
+        </motion.div>
 
       </div>
     </section>
