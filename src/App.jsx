@@ -1,8 +1,9 @@
 import Navbar from "./components/Navbar"
 import Hero from "./components/Hero"
-import Projects from "./components/Projects"
 import SectionDivider from "./components/SectionDivider"
-
+import Projects from "./components/Projects"
+import About from "./components/About"
+import Contact from "./components/Contact"
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
       <Hero />
       <SectionDivider />
       <Projects />
+      <About />
+      <Contact />
     </>
   )
 }
