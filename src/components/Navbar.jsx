@@ -1,12 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const Navbar = () => {
   const [expanded, setExpanded] = useState(false)
   const [dark, setDark] = useState(true)
 
+  // Sync initial theme with HTML class
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark")
+    setDark(isDark)
+  }, [])
+
   const toggleTheme = () => {
-    setDark(!dark)
-    document.documentElement.classList.toggle("dark")
+    const next = !dark
+    setDark(next)
+    document.documentElement.classList.toggle("dark", next)
   }
 
   return (
@@ -25,7 +32,6 @@ const Navbar = () => {
             bg-glass border border-glassBorder backdrop-blur-xl
             hover:shadow-lg hover:shadow-black/10
             ${expanded ? "max-w-full rounded-2xl" : "max-w-[900px] rounded-3xl"}
-
           `}
         >
           <div className="flex items-center justify-between px-8 py-4">
@@ -51,16 +57,22 @@ const Navbar = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="relative w-11 h-6 rounded-full bg-glass border border-glassBorder transition"
+              aria-label="Toggle theme"
+              className={`
+                relative w-11 h-6 rounded-full transition-colors duration-300
+                ${dark ? "bg-glass border border-glassBorder" : "bg-[#34C759]"}
+              `}
             >
               <span
                 className={`
-                  absolute top-0.5 transition-all duration-300
-                  w-5 h-5 rounded-full bg-foreground
-                  ${dark ? "left-0.5" : "left-5"}
+                  absolute top-0.5 left-0.5
+                  w-5 h-5 rounded-full bg-white
+                  transition-transform duration-300
+                  ${dark ? "translate-x-0" : "translate-x-5"}
                 `}
               />
             </button>
+
 
           </div>
         </div>

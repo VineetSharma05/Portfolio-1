@@ -31,14 +31,16 @@ const projects = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="pt-40 space-y-40">
-      {projects.map((project, index) => (
-        <div
-          key={index}
-          className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16"
-        >
-          {/* LEFT — STICKY TITLE */}
-          <div className="md:sticky md:top-40 h-fit">
+    <section id="projects" className="pt-32">
+      <div className="max-w-6xl mx-auto px-6 space-y-48">
+        {projects.map((project, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">
               {project.title}
             </h2>
@@ -47,38 +49,29 @@ const Projects = () => {
               {project.tagline}
             </p>
 
-            <a
-              href={project.link}
-              className="inline-flex items-center gap-2 mt-8 text-sm font-medium text-muted hover:text-foreground transition"
-            >
-              View case study →
-            </a>
-          </div>
-
-          {/* RIGHT — SCROLLING CONTENT */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="space-y-8"
-          >
-            <p className="text-lg text-muted">
+            <p className="mt-6 max-w-3xl text-lg text-muted">
               {project.description}
             </p>
 
-            <ul className="space-y-3 text-muted">
+            <ul className="mt-8 space-y-3 text-muted">
               {project.points.map((point, i) => (
                 <li key={i}>• {point}</li>
               ))}
             </ul>
 
-            <p className="text-sm text-muted">
+            <p className="mt-6 text-sm text-muted">
               {project.tech}
             </p>
+
+            <a
+              href={project.link}
+              className="inline-flex items-center gap-2 mt-10 text-sm font-medium text-muted hover:text-foreground transition"
+            >
+              View case study →
+            </a>
           </motion.div>
-        </div>
-      ))}
+        ))}
+      </div>
     </section>
   )
 }

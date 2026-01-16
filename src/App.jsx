@@ -3,6 +3,7 @@ import About from "./components/About"
 import SectionDivider from "./components/SectionDivider"
 import Projects from "./components/Projects"
 import Contact from "./components/Contact"
+import Socials from "./components/Socials"
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <SectionDivider />
       <Projects />
       <Contact />
+      <Socials />
     </>
   )
 }
