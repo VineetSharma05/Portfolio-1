@@ -4,7 +4,7 @@ const Navbar = () => {
   const [expanded, setExpanded] = useState(false)
   const [dark, setDark] = useState(true)
 
-  // Sync initial theme with HTML class
+  // Sync theme on load
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark")
     setDark(isDark)
@@ -18,14 +18,13 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-4 w-full z-50 flex justify-center">
-      
       {/* STABLE HOVER ZONE */}
       <div
         className="w-[95%] max-w-6xl"
         onMouseEnter={() => setExpanded(true)}
         onMouseLeave={() => setExpanded(false)}
       >
-        {/* ANIMATED NAVBAR */}
+        {/* NAV CONTAINER */}
         <div
           className={`
             mx-auto transition-all duration-500 ease-out
@@ -36,12 +35,12 @@ const Navbar = () => {
         >
           <div className="flex items-center justify-between px-8 py-4">
             
-            {/* Name */}
+            {/* NAME */}
             <span className="text-sm font-medium tracking-wide">
               Vineet
             </span>
 
-            {/* Links */}
+            {/* LINKS */}
             <div className="hidden md:flex gap-8 text-sm text-muted">
               <a href="#about" className="hover:text-foreground transition">
                 About
@@ -54,30 +53,33 @@ const Navbar = () => {
               </a>
             </div>
 
-            {/* Theme Toggle */}
+            {/* THEME TOGGLE — FIXED */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
               className={`
-                relative w-11 h-6 rounded-full transition-colors duration-300
-                ${dark ? "bg-glass border border-glassBorder" : "bg-[#34C759]"}
+                relative w-12 h-7 rounded-full overflow-hidden
+                flex items-center
+                transition-colors duration-300
+                ${dark
+                  ? "bg-glass border border-glassBorder"
+                  : "bg-[#34C759]"
+                }
               `}
             >
+              {/* KNOB */}
               <span
                 className={`
-                  absolute top-0.5 left-0.5
                   w-5 h-5 rounded-full bg-white
                   transition-transform duration-300
-                  ${dark ? "translate-x-0" : "translate-x-5"}
+                  ${dark ? "translate-x-1" : "translate-x-6"}
                 `}
               />
             </button>
 
-
           </div>
         </div>
       </div>
-
     </nav>
   )
 }
