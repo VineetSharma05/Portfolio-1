@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #faf9f6;
+  --fg: #14151a;
+  --muted: #6b6d74;
+  --glass: rgba(20, 21, 26, 0.04);
+  --glass-border: rgba(20, 21, 26, 0.10);
+  --accent: #0d9488;
+  --accent-soft: rgba(13, 148, 136, 0.12);
+  --gold: #a56a1a;
+}
+
+.dark {
+  --bg: #0b0c0e;
+  --fg: #f3f1ea;
+  --muted: #8b8d93;
+  --glass: rgba(243, 241, 234, 0.06);
+  --glass-border: rgba(243, 241, 234, 0.12);
+  --accent: #2dd4bf;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+  --gold: #f0a83a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1, h2, h3, h4 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+/* Ruler / gauge-style tick divider, reused across sections */
+.tick-rule {
+  position: relative;
+  height: 14px;
+}
+.tick-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--glass-border) 0,
+    var(--glass-border) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+  opacity: 0.9;
+}
+.tick-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--glass-border);
+}
+
+/* Thin scrollbar to match the precise, engineered feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 999px;
+}
