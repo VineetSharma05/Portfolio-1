@@ -1,98 +1,33 @@
-import { motion } from "framer-motion"
+import SectionHeader, { Eyebrow } from "./ui/SectionHeader"
+import Reveal from "./ui/Reveal"
+import { skillGroups } from "../data/skills"
 
-const skillGroups = [
-  {
-    label: "Languages",
-    items: ["Python", "JavaScript", "Java", "C++", "SQL"],
-  },
-  {
-    label: "Core CS & Systems",
-    items: ["Data Structures & Algorithms", "Distributed Systems", "Multi-threading", "System Design", "OOP"],
-  },
-  {
-    label: "AI / ML & LLM",
-    items: [
-      "TensorFlow",
-      "PyTorch",
-      "Hugging Face",
-      "Scikit-learn",
-      "XGBoost",
-      "BERT Transformers",
-      "RAG",
-      "Agentic AI",
-      "LangChain",
-      "FAISS",
-      "Prompt Engineering",
-    ],
-  },
-  {
-    label: "Computer Vision",
-    items: ["ResNet", "InceptionV3", "CNN-BiLSTM", "OpenCV"],
-  },
-  {
-    label: "Backend & Systems",
-    items: ["Flask", "FastAPI", "Node.js", "REST APIs", "MERN Stack", "Apache Kafka", "Docker", "Confluence REST API"],
-  },
-  {
-    label: "Data & Cloud",
-    items: ["MySQL", "SQL Server", "AWS S3", "Pandas", "NumPy", "Power BI", "Tableau", "Git", "JIRA"],
-  },
-]
-
-const Skills = () => {
+export default function Skills() {
   return (
-    <section id="skills" className="pt-8 pb-8 scroll-mt-28">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="skills" className="scroll-mt-16 py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeader eyebrow="Toolbox" title="What I work with." />
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-        >
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-accent">
-            Toolbox
-          </p>
-          <h2 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight">
-            Skills
-          </h2>
-        </motion.div>
-
-        <div className="mt-12 space-y-8">
+        <div className="mt-10 grid gap-4 md:grid-cols-2 md:gap-5">
           {skillGroups.map((group, i) => (
-            <motion.div
-              key={group.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-10"
-            >
-              <p className="font-mono text-xs text-muted uppercase tracking-wide pt-1">
-                {group.label}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className="
-                      text-sm px-3 py-1.5 rounded-lg
-                      bg-glass border border-glassBorder
-                      hover:border-accent hover:text-accent transition
-                    "
-                  >
-                    {item}
-                  </span>
-                ))}
+            <Reveal key={group.label} delay={(i % 2) * 0.07} className="h-full">
+              <div className="h-full rounded-[24px] border border-white/[0.08] bg-white/[0.025] p-7 backdrop-blur-sm">
+                <Eyebrow className="!text-muted">{group.label}</Eyebrow>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full border border-white/[0.07] bg-white/[0.04] px-3.5 py-1.5 text-sm text-foreground/85"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
-
       </div>
     </section>
   )
 }
-
-export default Skills

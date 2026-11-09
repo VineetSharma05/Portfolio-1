@@ -1,162 +1,129 @@
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useSpring } from "framer-motion"
 
-const experience = [
-  {
-    role: "Founder",
-    org: "Trailo",
-    range: "Aug ’26 — Present",
-    current: true,
-    points: [
-      "Early-stage build — details coming soon.",
-    ],
-    tags: ["Building", "Stealth"],
-  },
-  {
-    role: "Founder",
-    org: "CUE",
-    range: "Aug ’26 — Present",
-    current: true,
-    points: [
-      "Early-stage build — details coming soon.",
-    ],
-    tags: ["Building", "Stealth"],
-  },
-  {
-    role: "Software Engineering Intern",
-    org: "Fiserv Global Services",
-    range: "Jun ’26 — Aug ’26",
-    points: [
-      "Built a Flask-based release intelligence platform integrating Confluence REST APIs with BeautifulSoup parsing, replacing hours of manual RC-table analysis with automated, team-level signoff dashboards.",
-      "Architected a real-time source-freshness detection system using Confluence version-metadata diffing, 60-second polling, and browser Visibility/Focus APIs, backed by a thread-safe session store with auto-expiry.",
-    ],
-    tags: ["Flask", "Confluence REST API", "Python", "JavaScript"],
-  },
-  {
-    role: "Research Intern & Lead Developer",
-    org: "CDSAML, PES University",
-    range: "Jun ’25 — Aug ’25",
-    points: [
-      "Architected a 3-modality emotion recognition system — BERT-Transformer (text, 94% val. accuracy), CNN-BiLSTM (audio), custom CNN (video, 82% val. accuracy) — fused via a novel Hierarchical Fusion with Adaptive Certainty Weighting mechanism.",
-      "Engineered a real-time, stress-adaptive music therapy pipeline with sub-10s end-to-end latency on CPU-only hardware; co-authored a manuscript submitted to IEEE.",
-    ],
-    tags: ["PyTorch", "Hugging Face", "BERT", "MusicGen"],
-  },
-  {
-    role: "Club Head",
-    org: "NEXUS Technical Club, PES University",
-    range: "Jan ’24 — Aug ’26",
-    points: [
-      "Grew the community 10x (20 → 200+ members) through data-driven outreach and a 32-member core leadership team.",
-      "Founded NEXUS Community, a peer-teaching program across AI/ML, Web Tech, and Cybersecurity that upskilled 200+ students — a first-of-its-kind initiative among PES tech clubs.",
-    ],
-    tags: ["Leadership", "Community Building", "Mentorship"],
-  },
-  {
-    role: "Head of Marketing",
-    org: "PES The Amateur Manager and Scientists",
-    range: "Mar ’24 — Sep ’24",
-    points: [
-      "Designed a phased, city-wise segmented outreach campaign that attracted 8,000+ national participants to one of PES University's largest tech-business events.",
-    ],
-    tags: ["Marketing", "Growth Strategy"],
-  },
-  {
-    role: "Marketing Head — Launch Event “Aagaaz”",
-    org: "Physics Wallah",
-    range: "Feb ’24 — Mar ’24",
-    points: [
-      "Coordinated with branding and outreach teams to drive 1,000+ offline attendees at Physics Wallah's first Bangalore event.",
-    ],
-    tags: ["Event Marketing", "Brand Coordination"],
-  },
-]
+import SectionHeader, { Eyebrow } from "./ui/SectionHeader"
+import Reveal from "./ui/Reveal"
+import { leadership, nowBuilding, work } from "../data/experience"
 
-const Experience = () => {
+export default function Experience() {
   return (
-    <section id="experience" className="pt-8 pb-8 scroll-mt-28">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="experience" className="scroll-mt-16 py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <SectionHeader
+          eyebrow="Track record"
+          title="Where I’ve worked."
+          sub="Industry engineering, research, and building communities from the ground up."
+        />
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="flex items-end justify-between gap-6"
-        >
-          <div>
-            <p className="font-mono text-xs tracking-[0.2em] uppercase text-accent">
-              Track record
-            </p>
-            <h2 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight">
-              Experience
-            </h2>
+        {/* NOW BUILDING */}
+        <Reveal className="mt-10">
+          <div className="flex flex-col gap-3 rounded-2xl border border-accent/20 bg-accent/[0.06] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+              </span>
+              <p className="text-[15px]">
+                <span className="font-medium">Now building: {nowBuilding.org}</span>
+                <span className="text-muted"> · {nowBuilding.note}</span>
+              </p>
+            </div>
+            <span className="pl-5 sm:pl-0 font-mono text-xs text-muted whitespace-nowrap">{nowBuilding.range}</span>
           </div>
-        </motion.div>
+        </Reveal>
 
-        <div className="mt-14 md:mt-16">
-          {experience.map((item, i) => (
-            <motion.div
-              key={item.role + item.org}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="
-                grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 md:gap-10
-                py-8 border-t border-glassBorder
-                first:border-t-0 md:first:pt-0
-              "
-            >
-              {/* DATE / STATUS COLUMN */}
-              <div className="flex md:flex-col items-center md:items-start gap-2 md:gap-2">
-                <p className="font-mono text-xs text-muted tabular-nums whitespace-nowrap">
-                  {item.range}
+        <Timeline />
+
+        {/* LEADERSHIP */}
+        <Reveal className="mt-20">
+          <Eyebrow>Leadership</Eyebrow>
+          <h3 className="mt-3 font-display text-xl md:text-2xl font-semibold tracking-[-0.03em]">
+            Beyond the code.
+          </h3>
+        </Reveal>
+
+        <div className="mt-8 grid gap-4 md:grid-cols-3 md:gap-5">
+          {leadership.map((item, i) => (
+            <Reveal key={item.org} delay={i * 0.07} className="h-full">
+              <article className="flex h-full flex-col rounded-[24px] border border-white/[0.08] bg-white/[0.025] p-7 backdrop-blur-sm">
+                <p className="font-display text-4xl font-semibold tracking-[-0.04em]">
+                  {item.highlight.value}
                 </p>
-                {item.current && (
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-accent">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                    Ongoing
-                  </span>
-                )}
-              </div>
+                <p className="mt-1 text-sm text-muted">{item.highlight.label}</p>
 
-              {/* CONTENT COLUMN */}
-              <div>
-                <h3 className="text-xl md:text-2xl font-semibold tracking-tight">
-                  {item.role}
-                </h3>
-                <p className="mt-1 text-sm text-muted">{item.org}</p>
-
-                <ul className="mt-5 space-y-3 text-muted">
-                  {item.points.map((point, j) => (
-                    <li key={j} className="leading-relaxed">
-                      <span className="text-accent mr-2">—</span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="
-                        font-mono text-[11px] px-2.5 py-1 rounded-md
-                        bg-glass border border-glassBorder text-muted
-                      "
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div className="mt-8 border-t border-white/[0.08] pt-6">
+                  <h4 className="font-display text-lg font-semibold tracking-tight">{item.role}</h4>
+                  <p className="mt-0.5 text-sm text-muted">{item.org}</p>
+                  <p className="mt-4 text-[15px] leading-relaxed text-foreground/75">{item.point}</p>
                 </div>
-              </div>
-            </motion.div>
+                <p className="mt-auto pt-6 font-mono text-[11px] text-muted">{item.range}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
-
       </div>
     </section>
   )
 }
 
-export default Experience
+/** Vertical timeline whose line fills with the accent as you scroll through it. */
+function Timeline() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 55%"] })
+  const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
+
+  return (
+    <div ref={ref} className="relative mt-12">
+      {/* Track + fill. Mobile: left edge. Desktop: between date and content columns. */}
+      <div className="absolute bottom-2 top-2 left-[4px] md:left-[200px] w-px bg-white/[0.08]" aria-hidden="true">
+        <motion.div
+          style={{ scaleY: fill }}
+          className="h-full w-full origin-top bg-gradient-to-b from-accent to-accent/30"
+        />
+      </div>
+
+      {work.map((item, i) => (
+        <Reveal
+          key={item.org}
+          delay={i * 0.05}
+          className="relative grid gap-3 pb-12 last:pb-0 pl-8 md:pl-0 md:grid-cols-[176px_1fr] md:gap-12"
+        >
+          {/* Node */}
+          <span
+            aria-hidden="true"
+            className="absolute top-[7px] left-0 md:left-[196px] h-[9px] w-[9px] rounded-full border border-accent bg-background node-glow"
+          />
+
+          <p className="font-mono text-xs text-muted tabular-nums md:pt-1.5 md:text-right">{item.range}</p>
+
+          <div>
+            <h3 className="font-display text-xl md:text-2xl font-semibold tracking-[-0.03em]">
+              {item.role}
+            </h3>
+            <p className="mt-1 text-[15px] text-accent">{item.org}</p>
+
+            <ul className="mt-5 space-y-3 max-w-3xl">
+              {item.points.map((point) => (
+                <li key={point} className="flex gap-3 leading-relaxed text-foreground/75">
+                  <span className="mt-[0.65em] h-1 w-1 shrink-0 rounded-full bg-white/40" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {item.tags.map((tag) => (
+                <li
+                  key={tag}
+                  className="rounded-full border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 font-mono text-[11px] text-muted"
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+      ))}
+    </div>
+  )
+}

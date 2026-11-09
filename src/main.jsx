@@ -4,8 +4,8 @@ import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 import "./index.css"
 
-// Force dark mode on first load
-document.documentElement.classList.add("dark")
+// The saved accent mood (purple/teal) is applied by an inline script in
+// index.html before first paint, so there is no colour flash on load.
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
