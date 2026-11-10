@@ -2,90 +2,216 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================================
+   TOKENS
+   True-black base, ONE accent at a time. --accent is a registered
+   <color>, so the mood switch (teal -> purple) fades smoothly site-wide.
+   ========================================================= */
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #a78bfa;
+}
+
 :root {
-  --bg: #faf9f6;
-  --fg: #14151a;
-  --muted: #6b6d74;
-  --glass: rgba(20, 21, 26, 0.04);
-  --glass-border: rgba(20, 21, 26, 0.10);
-  --accent: #0d9488;
-  --accent-soft: rgba(13, 148, 136, 0.12);
-  --gold: #a56a1a;
+  --bg-rgb: 0 0 0;
+  --surface-rgb: 12 12 14;
+  --fg-rgb: 245 245 247;
+  --muted-rgb: 134 134 139;
+
+  --teal: #2dd4bf;
+  --purple: #a78bfa;
+  --accent: var(--purple);
+
+  color-scheme: dark;
+  transition: --accent 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.dark {
-  --bg: #0b0c0e;
-  --fg: #f3f1ea;
-  --muted: #8b8d93;
-  --glass: rgba(243, 241, 234, 0.06);
-  --glass-border: rgba(243, 241, 234, 0.12);
-  --accent: #2dd4bf;
-  --accent-soft: rgba(45, 212, 191, 0.12);
-  --gold: #f0a83a;
+/* Mood: teal, when the navbar switch is on (purple is the default) */
+:root[data-mood="teal"] {
+  --accent: var(--teal);
 }
 
+/* =========================================================
+   BASE
+   ========================================================= */
 html {
+  background: rgb(var(--bg-rgb));
   scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--fg);
+  color: rgb(var(--fg-rgb));
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-feature-settings: "cv11", "ss01";
+  font-feature-settings: "cv11", "ss01", "ss03";
+  min-height: 100vh;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4 {
-  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-family: "Inter Tight", "Inter", system-ui, sans-serif;
 }
 
 ::selection {
-  background: var(--accent-soft);
-  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: rgb(var(--fg-rgb));
 }
 
-/* Ruler / gauge-style tick divider, reused across sections */
-.tick-rule {
-  position: relative;
-  height: 14px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
-.tick-rule::before {
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.1);
+  border-radius: 999px;
+  border: 2px solid rgb(var(--bg-rgb));
+}
+
+/* =========================================================
+   AMBIENT BACKGROUND (fixed, behind everything)
+   One soft accent glow at the top, very faint grain. Minimal on purpose.
+   ========================================================= */
+.ambient-glow {
+  position: absolute;
+  top: -55vmax;
+  left: 50%;
+  width: 110vmax;
+  height: 80vmax;
+  margin-left: -55vmax;
+  border-radius: 9999px;
+  will-change: transform;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--accent) 20%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 45%,
+    transparent 100%
+  );
+  animation: breathe 18s ease-in-out infinite alternate;
+}
+
+.cursor-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  --mx: -1000px;
+  --my: -1000px;
+  background: radial-gradient(
+    480px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--accent) 5%, transparent),
+    transparent 70%
+  );
+}
+
+/* Very light film grain, a nod to the club artwork */
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Hero backdrop: fading dot grid + accent glow ---------- */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 78% 8%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 70%),
+    radial-gradient(ellipse 45% 50% at 12% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
+}
+
+/* Fades the dots out towards the bottom of the hero */
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 88%);
+  mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 88%);
+}
+
+.hero-dots,
+.hero-dots-spot {
+  position: absolute;
+  inset: 0;
+  background-size: 22px 22px;
+}
+
+.hero-dots {
+  background-image: radial-gradient(circle, rgb(255 255 255 / 0.17) 1.2px, transparent 1.7px);
+}
+
+/* Accent-coloured dots revealed around the cursor */
+.hero-dots-spot {
+  --mx: -1000px;
+  --my: -1000px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 85%, white) 1.5px,
+    transparent 2px
+  );
+  -webkit-mask-image: radial-gradient(260px circle at var(--mx) var(--my), black 0%, transparent 70%);
+  mask-image: radial-gradient(260px circle at var(--mx) var(--my), black 0%, transparent 70%);
+}
+
+@keyframes breathe {
+  0%   { transform: translate3d(-3vw, 0, 0) scale(1); opacity: 0.85; }
+  100% { transform: translate3d(3vw, 2vh, 0) scale(1.06); opacity: 1; }
+}
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+@layer utilities {
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      var(--accent) 0%,
+      color-mix(in srgb, var(--accent) 55%, rgb(var(--fg-rgb))) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .node-glow {
+    box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
+
+  .hairline {
+    border-color: rgb(255 255 255 / 0.08);
+  }
+}
+
+/* Spotlight that follows the pointer inside a card (set --x / --y on hover) */
+.spotlight::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--glass-border) 0,
-    var(--glass-border) 1px,
-    transparent 1px,
-    transparent 28px
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    420px circle at var(--x, 50%) var(--y, 50%),
+    rgb(255 255 255 / 0.045),
+    transparent 45%
   );
-  opacity: 0.9;
 }
-.tick-rule::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--glass-border);
+.spotlight:hover::before {
+  opacity: 1;
 }
 
-/* Thin scrollbar to match the precise, engineered feel */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: 999px;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ambient-glow { animation: none !important; }
+  :root { transition: none; }
+  .animate-ping, .animate-pulse { animation: none !important; }
 }

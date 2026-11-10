@@ -1,26 +1,25 @@
 /** @type {import('tailwindcss').Config} */
+const rgb = (name) => `rgb(var(--${name}-rgb) / <alpha-value>)`
+
 export default {
-  darkMode: "class",
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
   theme: {
     extend: {
       colors: {
-        background: "var(--bg)",
-        foreground: "var(--fg)",
-        muted: "var(--muted)",
-        glass: "var(--glass)",
-        glassBorder: "var(--glass-border)",
-        accent: "var(--accent)",
-        accentSoft: "var(--accent-soft)",
-        gold: "var(--gold)",
+        background: rgb("bg"),
+        surface: rgb("surface"),
+        foreground: rgb("fg"),
+        muted: rgb("muted"),
+        // Single animatable accent: teal by default, purple in the other mood
+        accent: "color-mix(in srgb, var(--accent) calc(<alpha-value> * 100%), transparent)",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "sans-serif"],
+        display: ['"Inter Tight"', "Inter", "system-ui", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+      },
+      transitionTimingFunction: {
+        apple: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },

@@ -1,11 +1,10 @@
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 
-import About from "../components/About"
-import SectionDivider from "../components/SectionDivider"
-import Experience from "../components/Experience"
-import Achievements from "../components/Achievements"
+import Hero from "../components/Hero"
+import Stats from "../components/Stats"
 import Projects from "../components/Projects"
+import Experience from "../components/Experience"
 import Skills from "../components/Skills"
 import Contact from "../components/Contact"
 
@@ -27,13 +26,10 @@ const Home = () => {
 
   return (
     <>
-      <About />          {/* Hero */}
-      <SectionDivider />
-      <Experience />
-      <Achievements />
-      <SectionDivider />
+      <Hero />
+      <Stats />
       <Projects />
-      <SectionDivider />
+      <Experience />
       <Skills />
       <Contact />
     </>

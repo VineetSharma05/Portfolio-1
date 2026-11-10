@@ -1,77 +1,86 @@
-import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 
-const Contact = () => {
+import Reveal from "./ui/Reveal"
+import Pill from "./ui/Pill"
+import { Eyebrow } from "./ui/SectionHeader"
+import { ArrowUpRight, Check, Copy } from "./ui/icons"
+import { profile } from "../data/profile"
+
+export default function Contact() {
+  const [copied, setCopied] = useState(false)
+  const timer = useRef(0)
+
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email)
+      setCopied(true)
+      clearTimeout(timer.current)
+      timer.current = setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.location.href = `mailto:${profile.email}`
+    }
+  }
+
+  const { links } = profile
+
   return (
-    <section id="contact" className="py-32 md:py-40 scroll-mt-28">
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl"
-        >
-          <p className="font-mono text-xs tracking-[0.2em] uppercase text-accent">
-            Get in touch
-          </p>
+    <section id="contact" className="scroll-mt-16 py-16 md:py-24">
+      <div className="mx-auto max-w-6xl px-6">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-[32px] border border-white/[0.08] bg-surface/60 px-7 py-14 text-center md:px-16 md:py-20">
+            {/* Card's own aurora */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 -top-1/2 h-[120%] w-[90%] -translate-x-1/2 rounded-full"
+              style={{ background: "radial-gradient(closest-side, color-mix(in srgb, var(--accent) 13%, transparent), transparent)" }}
+            />
 
-          <h2 className="mt-3 text-3xl md:text-5xl font-semibold tracking-tight">
-            Let’s talk
-          </h2>
+            <div className="relative">
+              <Eyebrow>Get in touch</Eyebrow>
+              <h2 className="mx-auto mt-5 max-w-3xl font-display text-4xl md:text-[56px] font-semibold tracking-[-0.04em] leading-[0.98]">
+                Let’s build <span className="text-gradient">something.</span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-base md:text-[17px] text-muted leading-relaxed">
+                A role, a project, or a conversation about AI, systems or the
+                next hackathon. My inbox is open.
+              </p>
 
-          <div className="mt-5 inline-flex items-center gap-2 font-mono text-xs text-muted">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            Open to opportunities, collaborations & interesting problems
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                <Pill href={`mailto:${profile.email}`} variant="solid">
+                  Email me
+                </Pill>
+                <Pill onClick={copyEmail} aria-live="polite">
+                  {copied ? (
+                    <>
+                      <Check size={15} className="text-accent" /> Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={15} /> {profile.email}
+                    </>
+                  )}
+                </Pill>
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-1">
+                {[
+                  ["Résumé", links.resume],
+                  ["GitHub", links.github],
+                  ["LinkedIn", links.linkedin],
+                ]
+                  .filter(([, url]) => url)
+                  .map(([label, url]) => (
+                    <Pill key={label} href={url} variant="ghost">
+                      {label} <ArrowUpRight size={13} />
+                    </Pill>
+                  ))}
+              </div>
+            </div>
           </div>
-
-          <p className="mt-8 text-lg text-muted">
-            Whether it’s a role, a project, or just a conversation about
-            AI, systems, or the next hackathon — my inbox is open.
-          </p>
-
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="mailto:vineetsharma2205@gmail.com"
-              className="px-6 py-3 rounded-xl bg-foreground text-background text-sm font-medium hover:opacity-90 transition"
-            >
-              Email me
-            </a>
-
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-xl border border-glassBorder text-sm font-medium hover:border-accent hover:text-accent transition"
-            >
-              View résumé
-            </a>
-
-            <a
-              href="https://github.com/VineetSharma05"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-xl border border-glassBorder text-sm font-medium hover:border-accent hover:text-accent transition"
-            >
-              GitHub
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/vineet-sharma-5a9320312/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-xl border border-glassBorder text-sm font-medium hover:border-accent hover:text-accent transition"
-            >
-              LinkedIn
-            </a>
-          </div>
-
-          <p className="mt-10 font-mono text-xs text-muted">
-            vineetsharma2205@gmail.com
-          </p>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   )
 }
-
-export default Contact

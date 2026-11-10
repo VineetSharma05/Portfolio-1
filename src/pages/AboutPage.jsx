@@ -1,184 +1,115 @@
+import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 
-const education = [
+import Reveal from "../components/ui/Reveal"
+import Pill from "../components/ui/Pill"
+import { Eyebrow } from "../components/ui/SectionHeader"
+import { ArrowRight, Bolt } from "../components/ui/icons"
+import { education } from "../data/profile"
+import { EASE } from "../lib/motion"
+
+const principles = [
   {
-    school: "PES University, Bengaluru",
-    detail: "B.Tech, Computer Science & Engineering",
-    range: "2023 — 2027",
-    note: "CGPA 8.29",
+    title: "Ship it.",
+    body: "Most of my best work has shipped inside a 24 or 36-hour hackathon window. A deadline forces you to find what actually matters.",
   },
   {
-    school: "AECS Maaruti Magnolia Public School",
-    detail: "CBSE — Class XII (91%) · Class X (89%)",
-    range: "2016 — 2023",
+    title: "Clarity first.",
+    body: "In code, communication and design. Clean architecture over clever shortcuts, because someone has to maintain it next month.",
+  },
+  {
+    title: "Build the team.",
+    body: "Growing NEXUS from 20 to 200+ taught me that the best systems are people. Thirty-two student leads now run what started as one idea.",
   },
 ]
 
-const AboutPage = () => {
+const enter = (delay) => ({
+  initial: { opacity: 0, y: 24, filter: "blur(8px)" },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  transition: { duration: 0.9, ease: EASE, delay },
+})
+
+const AboutPage = ({ onQuickView }) => {
   return (
-    <section className="min-h-screen pt-32 md:pt-40 px-6 pb-32">
-      <div className="max-w-5xl mx-auto">
+    <div className="mx-auto max-w-6xl px-6 pt-28 pb-16 md:pt-36">
+      {/* INTRO */}
+      <motion.div {...enter(0)}>
+        <Eyebrow>The story</Eyebrow>
+      </motion.div>
+      <motion.h1
+        {...enter(0.06)}
+        className="mt-4 max-w-4xl font-display text-4xl md:text-[56px] font-semibold tracking-[-0.04em] leading-[1.02]"
+      >
+        Two worlds, <span className="text-gradient">one lesson.</span>
+      </motion.h1>
 
-        {/* ================= INTRO ================= */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="font-mono text-xs tracking-[0.2em] uppercase text-accent"
-        >
-          The story
-        </motion.p>
+      <motion.p
+        {...enter(0.14)}
+        className="mt-8 max-w-3xl text-lg md:text-xl leading-relaxed text-foreground/80"
+      >
+        I’m a Computer Science student at PES University who spent the last two
+        years in two very different worlds: training models that need to work
+        in the real world, and leading a community that grew ten times over.
+        Both taught me the same thing. The hard part was never the idea.{" "}
+        <span className="text-foreground">It’s shipping something people actually rely on.</span>
+      </motion.p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.05 }}
-          className="mt-4 text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]"
-        >
-          About Vineet
-        </motion.h1>
+      {/* PRINCIPLES */}
+      <div className="mt-16 grid gap-4 md:grid-cols-3 md:gap-5">
+        {principles.map((p, i) => (
+          <Reveal key={p.title} delay={i * 0.07} className="h-full">
+            <div className="h-full rounded-[24px] border border-white/[0.08] bg-white/[0.025] p-7 backdrop-blur-sm">
+              <p className="font-mono text-[11px] text-accent tabular-nums">0{i + 1}</p>
+              <h2 className="mt-4 font-display text-xl font-semibold tracking-[-0.03em]">{p.title}</h2>
+              <p className="mt-3 leading-relaxed text-muted">{p.body}</p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-8 max-w-3xl text-lg text-muted leading-relaxed"
-        >
-          I’m a Computer Science student at PES University who ended up spending
-          most of the last two years in two very different worlds — training
-          models that need to work in the real world, and leading a community
-          that grew ten times over on my watch. Both taught me the same lesson:
-          the hard part was never the idea. It’s shipping something people
-          actually rely on.
-        </motion.p>
+      {/* BEYOND + EDUCATION */}
+      <div className="mt-16 grid gap-12 md:grid-cols-2">
+        <Reveal>
+          <Eyebrow>Off the clock</Eyebrow>
+          <p className="mt-5 text-lg leading-relaxed text-foreground/80">
+            Cars, sports, and whatever new tech just dropped. I’ll happily talk
+            about any of the three for an hour. On a team I like to collaborate,
+            learn fast, and lead when it counts.
+          </p>
+        </Reveal>
 
-        {/* ================= SPLIT SECTION ================= */}
-        <div className="mt-20 grid md:grid-cols-2 gap-16">
-
-          {/* ---------- TECHNICAL ---------- */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="font-mono text-xs uppercase tracking-wide text-muted">
-              Technical work
-            </h2>
-
-            <ul className="mt-6 space-y-4 text-muted">
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Shipping AI/ML systems aimed at real-world impact — smart
-                agriculture, health tech, financial coaching, and stress-aware
-                music generation.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Full-stack development with React, Flask, and REST APIs,
-                with an eye for clean architecture over clever shortcuts.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Deep in computer vision, NLP, and distributed systems — from
-                fine-tuning BERT to running Kafka across a 4-node network.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Comfortable under a ticking clock: most of my best work has
-                shipped inside a 24 or 36-hour hackathon window.
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* ---------- NON-TECH / LEADERSHIP ---------- */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-          >
-            <h2 className="font-mono text-xs uppercase tracking-wide text-muted">
-              Leadership & beyond code
-            </h2>
-
-            <ul className="mt-6 space-y-4 text-muted">
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Grew NEXUS Technical Club from 20 to 200+ members as Club Head,
-                and founded a peer-teaching program now run by 32 student leads.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Led marketing for university-scale events, including a campaign
-                that brought 8,000+ national participants to campus.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Coordinated brand and outreach for Physics Wallah’s first
-                Bangalore launch event — 1,000+ people, one shot to get it right.
-              </li>
-              <li>
-                <span className="text-accent mr-2">—</span>
-                Outside of all that: cars, sports, and whatever new tech just
-                dropped. I’ll happily talk about any of the three for an hour.
-              </li>
-            </ul>
-          </motion.div>
-
-        </div>
-
-        {/* ================= EDUCATION ================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-          className="mt-24"
-        >
-          <h2 className="font-mono text-xs uppercase tracking-wide text-muted">
-            Education
-          </h2>
-
-          <div className="mt-6">
+        <Reveal delay={0.07}>
+          <Eyebrow>Education</Eyebrow>
+          <ul className="mt-5 divide-y divide-white/[0.08]">
             {education.map((item) => (
-              <div
-                key={item.school}
-                className="
-                  grid grid-cols-1 md:grid-cols-[1fr_auto] gap-1 md:gap-6
-                  py-5 border-t border-glassBorder first:border-t-0
-                "
-              >
+              <li key={item.school} className="flex flex-wrap items-start justify-between gap-x-6 gap-y-1 py-4 first:pt-0">
                 <div>
                   <p className="font-medium">{item.school}</p>
                   <p className="mt-1 text-sm text-muted">{item.detail}</p>
                 </div>
-                <div className="flex md:flex-col md:items-end gap-2 md:gap-1 justify-between md:justify-start">
+                <div className="text-right">
                   <p className="font-mono text-xs text-muted tabular-nums">{item.range}</p>
-                  {item.note && (
-                    <p className="font-mono text-xs text-accent tabular-nums">{item.note}</p>
-                  )}
+                  {item.note && <p className="mt-1 font-mono text-xs text-accent">{item.note}</p>}
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
-        </motion.div>
-
-        {/* ================= CLOSING ================= */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-          className="mt-24 max-w-3xl text-muted leading-relaxed"
-        >
-          I care deeply about clarity — in code, communication, and design.
-          Whether I’m training a model or leading a team, my focus is on
-          building things that last and solving problems that actually matter.
-        </motion.p>
-
+          </ul>
+        </Reveal>
       </div>
-    </section>
+
+      {/* NEXT */}
+      <Reveal className="mt-16 flex flex-wrap gap-3">
+        <Link
+          to="/#work"
+          className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition duration-300 ease-apple hover:bg-white hover:scale-[1.02]"
+        >
+          See my work <ArrowRight size={15} />
+        </Link>
+        <Pill onClick={onQuickView}>
+          <Bolt size={14} className="text-accent" /> Quick view
+        </Pill>
+      </Reveal>
+    </div>
   )
 }
 
